@@ -1,13 +1,13 @@
 package controllers
 
-import akka.NotUsed
-import akka.stream.Materializer
-import akka.stream.scaladsl.{Flow, Framing, Sink, Source}
-import akka.util.ByteString
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.Materializer
+import org.apache.pekko.stream.scaladsl.{Flow, Framing, Sink, Source}
+import org.apache.pekko.util.ByteString
 import com.fasterxml.jackson.dataformat.csv.{CsvMapper, CsvSchema}
 import models.Match
 import play.api.Configuration
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{Format, JsValue, Json}
 import play.api.libs.streams.Accumulator
 import play.api.libs.ws.WSClient
 import play.api.mvc.WebSocket.MessageFlowTransformer
@@ -30,7 +30,7 @@ class HomeController @Inject()(
     MessageFlowTransformer.jsonMessageFlowTransformer[String, JsValue]
 
   private def country(code: String): String = {
-    new Locale("", code).getDisplayCountry(Locale.ENGLISH)
+    Locale.of("", code).getDisplayCountry(Locale.ENGLISH)
   }
 
   private def configSettings(path: String): Seq[(String, String)] = {
@@ -122,7 +122,7 @@ class HomeController @Inject()(
 
   case class JsonBody(text: String)
   object JsonBody {
-    implicit val format = Json.format[JsonBody]
+    implicit val format: Format[JsonBody] = Json.format[JsonBody]
   }
 
   def findJson(kind: Option[String], phone: Boolean, pop: Boolean): Action[JsonBody] = Action(parse.json[JsonBody]).async { implicit request =>
