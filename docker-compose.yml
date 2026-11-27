@@ -1,8 +1,10 @@
 version: '3'
 services:
   solr:
-    image: solr:6.6.6
+    image: solr:10.1.0
+    # Solr 10 defaults to SolrCloud mode
+    command: solr-foreground --user-managed
     ports:
     - "8984:8983"
     volumes:
-    - "./coredir:/opt/solr/server/solr/solr-core"
+    - "./coredir:/var/solr/data/emt"

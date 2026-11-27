@@ -56,7 +56,8 @@ class HomeController @Inject()(
   def query(text: String, kind: Option[String], phone: Boolean, pop: Boolean): Future[Seq[Match]] = {
     val popBoost: Seq[(String, String)] = if(pop) Seq("bf" -> "population") else Seq.empty[(String,String)]
     val params: Seq[(String,String)] = Seq(
-      "qf" -> ("name_exact^5.0 name^1.0 alternateNames" + (if(phone) " name_phone^0.5" else "")),
+      // NB: Solr 10 scores phonetic matches lower relative to alternate names than Solr 6
+      "qf" -> ("name_exact^5.0 name^1.0 alternateNames" + (if(phone) " name_phone^0.55" else "")),
       "pf" -> "name^50 alternateNames^20",
       "defType" -> "edismax",
       "q" -> text
