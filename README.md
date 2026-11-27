@@ -12,7 +12,7 @@ The datasets used are the Geonames [`allCountries.zip`](https://download.geoname
 and [this set](https://portal.ehri-project.eu/api/datasets/nmfUu4u9Hr) of entities from the EHRI portal database.
 
 You can set up a dev instance by running `sudo docker-compose up` from the project directory, which will start an 
-instance of Solr 6.6.6 using the supplied core config on port 8984. You can then run the `./bin/ingest` script to 
+instance of Solr 10.1.0 using the supplied core config on port 8984. You can then run the `./bin/ingest` script to 
 download the datasets and import them into Solr using, respectively, the CSV and JSON update handlers. Note: this will
 take quite some time since Solr has to ingest ~1.5GB of Geonames data.
 

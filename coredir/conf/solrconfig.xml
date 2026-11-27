@@ -37,7 +37,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>6.1.0</luceneMatchVersion>
+  <luceneMatchVersion>10.4.0</luceneMatchVersion>
 
   <!-- Data Directory
 
@@ -133,7 +133,6 @@
 
        For more details see http://wiki.apache.org/solr/SolrJmx
     -->
-  <jmx />
   <!-- If you want to connect to a particular server, specify the
        agentId 
     -->
@@ -178,7 +177,6 @@
     -->
     <updateLog>
       <str name="dir">${solr.ulog.dir:}</str>
-      <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
     </updateLog>
  
     <!-- AutoCommit
@@ -269,7 +267,7 @@
            autowarmCount - the number of entries to prepopulate from
                and old cache.  
       -->
-    <filterCache class="solr.FastLRUCache"
+    <filterCache class="solr.CaffeineCache"
                  size="512"
                  initialSize="512"
                  autowarmCount="0"/>
@@ -282,7 +280,7 @@
            maxRamMB - the maximum amount of RAM (in MB) that this cache is allowed
                       to occupy
      -->
-    <queryResultCache class="solr.LRUCache"
+    <queryResultCache class="solr.CaffeineCache"
                      size="512"
                      initialSize="512"
                      autowarmCount="0"/>
@@ -293,14 +291,14 @@
          document).  Since Lucene internal document ids are transient,
          this cache will not be autowarmed.  
       -->
-    <documentCache class="solr.LRUCache"
+    <documentCache class="solr.CaffeineCache"
                    size="512"
                    initialSize="512"
                    autowarmCount="0"/>
     
     <!-- custom cache currently used by block join --> 
     <cache name="perSegFilter"
-      class="solr.search.LRUCache"
+      class="solr.CaffeineCache"
       size="10"
       initialSize="0"
       autowarmCount="10"
